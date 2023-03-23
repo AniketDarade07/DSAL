@@ -31,6 +31,78 @@ class stack1{
             return p;
         }
 };
+class stack2{
+    public:
+        node* arr[20];
+        int top;
+        stack2(){
+            top=-1;
+        }
+        void push(node* temp){
+            top++;
+            arr[top]=temp;
+        }
+        int empty(){
+            if(top==-1){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }
+        node* pop(){
+            node* p=arr[top];
+            top--;
+            return p;
+        }
+};
+class queue1{
+    public:
+    int r,f;
+    node* arr[20];
+    queue1()
+    {
+        r=f=-1;
+    }
+    int empty()
+    {
+        if(r==-1 && f==-1)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+
+    }
+    void insert(node* p)
+    {
+        if(empty()==1)
+        {
+            r=f=0;
+            arr[r]=p;
+        }
+        else{
+            r=r+1;
+            arr[r]=p;
+        }
+        
+    }
+    node* remove()
+    {
+        node* temp=arr[f];
+        if(r==f)
+        {
+            r=f=-1;
+        }
+        else{
+            f++;
+        }
+        return temp;
+    }
+    
+};
 class tree{
 	public:
 		node* root;
@@ -102,6 +174,47 @@ class tree{
 		        t=t->right;
 		    }
 		}
+		void nonrecursive_postorder(node* t){
+		    stack1 st;
+		    stack2 st1;
+		    node* temp;
+		    if(t==NULL){
+		        return;
+		    }
+		    st.push(t);
+		    while(st.empty()!=1){
+		        temp=st.pop();
+		        st1.push(temp);
+		        if(temp->left!=NULL)
+		            st.push(temp->left);
+		        if(temp->right)
+		            st.push(temp->right);
+		    }
+		    while(st1.empty()!=1){
+		        temp=st1.pop();
+		        cout<<temp->data<<" ";
+		    }
+		}
+		void BFS(node* t)
+		{
+		    queue1 q;
+		    q.insert(t);
+		    cout<<t->data<<" ";
+		    while(q.empty()!=1){
+		        t=q.remove();
+		        if(t->left!=NULL)
+		        {
+		            cout<<t->left->data<<" ";
+		            q.insert(t->left);
+		        }
+		        if(t->right!=NULL)
+		        {
+		            cout<<t->right->data<<" ";
+		            q.insert(t->right);
+		        }
+		    }
+		}
+		
 };
 int main(){
 	tree t;
@@ -129,6 +242,12 @@ int main(){
 			    t.nonrecursive_preorder(t.root);
 			    break;
 			case 7:
+			    t.nonrecursive_postorder(t.root);
+			    break;
+			case 8:
+			    t.BFS(t.root);
+			    break;
+			case 9:
 			    exit(1);
 		}
 	}
